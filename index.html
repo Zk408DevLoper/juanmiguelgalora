@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>zk408 | Portfolio</title><link rel="stylesheet" href="style.css"></head><body><header id="home"><a class="brand" href="#home">zk408<span aria-hidden="true">.</span></a><nav id="main-nav" aria-label="Main"><a class="glass" href="#home">Home</a><a class="glass" href="#projects">Projects</a></nav></header><main><section class="hero"><div><small>zk408 / Developer portfolio</small><h1>Games &amp;<br><em>applications.</em></h1><p>I’m Juan Miguel, a student developer building Roblox games and location-based apps.</p><a class="glass" href="#projects">Explore projects ↓</a></div><div class="art" aria-hidden="true"><i></i><i></i><i></i><i></i></div></section><section id="projects"><h2>Selected projects</h2><div class="cards">
+<article><div class="cover echo" aria-hidden="true"></div><div class="copy"><h3>Financial Dashboard</h3><p>This includes the income sheet, expense sheet, and report summary</p>
+<div class="actions">
+  <a class="glass" href="data:text/plain;charset=utf-8,Earthquake%20Monitor%0A%0AA%20location-based%20map%20of%20recent%20earthquakes%2C%20with%20nearby%20event%20notifications.%0A%0ASeismic%20records%20from%20EMSC%20power%20the%20map.%20Each%20event%20includes%20its%20magnitude%2C%20depth%20and%20distance%20from%20the%20user." download="earthquake-monitor-overview.txt" aria-label="Download Earthquake Monitor project overview">Download &darr;</a>
+</div>
+</div></article>
+<article><div class="cover grid" aria-hidden="true"></div><div class="copy"><h3>PowerPoint Presentation</h3><p>This include the Minecraft presentation slides</p>
+<div class="actions">
+  <a class="glass" href="data:text/plain;charset=utf-8,Tagu%20Taguan%0A%0AA%20Filipino%20hide-and-seek%20game%20where%20the%20rules%20change%20every%20minute.%0A%0APlayers%20adapt%20to%20a%20new%20temporary%20twist%20each%20minute%20while%20trying%20to%20stay%20hidden." download="tagu-taguan-overview.txt" aria-label="Download Tagu Taguan project overview">Download &darr;</a>
+</div>
+</div></article>
+<article><div class="cover disc" aria-hidden="true"></div><div class="copy"><h3>Make a Pizza</h3><p>A tabletop showdown where two players turn toppings into pizza art.</p>
+<div class="actions">
+  <a class="glass" href="data:text/plain;charset=utf-8,Make%20a%20Pizza%0A%0AA%20tabletop%20showdown%20where%20two%20players%20turn%20toppings%20into%20pizza%20art.%0A%0ABoth%20players%20work%20from%20a%20reference%20image%20and%20race%20the%20clock%20to%20finish%20their%20designs." download="make-a-pizza-overview.txt" aria-label="Download Make a Pizza project overview">Download &darr;</a>
+</div>
+</div></article>
+</div></section></main><footer><span>zk408 / Portfolio</span><a href="#home">Back to top ↑</a></footer><script>
+const explore = document.querySelector('.hero a[href="#projects"]');
+let slide = 0;
+function stopSlide() {
+  cancelAnimationFrame(slide);
+  slide = 0;
+}
+for (const event of ['wheel', 'touchstart', 'keydown', 'pointerdown']) {
+  window.addEventListener(event, stopSlide, { passive: true });
+}
+explore.addEventListener('click', event => {
+  if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  stopSlide();
+  const target = document.getElementById('projects');
+  const start = window.scrollY;
+  const distance = target.getBoundingClientRect().top;
+  const finish = () => {
+    if (location.hash !== '#projects') history.pushState(null, '', '#projects');
+    target.tabIndex = -1;
+    target.focus({ preventScroll: true });
+  };
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    target.scrollIntoView({ behavior: 'instant' });
+    finish();
+    return;
+  }
+  const began = performance.now();
+  function step(now) {
+    const t = Math.min(1, Math.max(0, (now - began) / 720));
+    const ease = t * t * (3 - 2 * t);
+    window.scrollTo({ top: start + distance * ease, behavior: 'instant' });
+    if (t < 1) slide = requestAnimationFrame(step);
+    else finish();
+  }
+  slide = requestAnimationFrame(step);
+});
+const navigation = document.getElementById('main-nav');
+const toggle = document.createElement('button');
+toggle.className = 'glass menu-toggle';
+toggle.type = 'button';
+toggle.setAttribute('aria-controls', navigation.id);
+toggle.innerHTML = '<span></span><span></span><span></span>';
+navigation.before(toggle);
+function setMenu(open) {
+  toggle.setAttribute('aria-expanded', String(open));
+  toggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+}
+setMenu(false);
+toggle.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
+navigation.addEventListener('click', event => {
+  if (!event.target.closest('a') || toggle.getAttribute('aria-expanded') !== 'true') return;
+  toggle.focus({preventScroll:true});
+  setMenu(false);
+});
+document.addEventListener('click', event => {
+  if (!toggle.contains(event.target) && !navigation.contains(event.target)) setMenu(false);
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+    setMenu(false);
+    toggle.focus();
+  }
+});
+matchMedia('(max-width:580px)').addEventListener('change', () => setMenu(false));
+</script></body></html>
