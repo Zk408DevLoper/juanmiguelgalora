@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Juan Miguel Galora | Portfolio</title><link rel="stylesheet" href="style.css?v=motion"></head><body><header id="home"><a class="brand" href="#home">Juan Miguel Galora<span aria-hidden="true">.</span></a><nav id="main-nav" aria-label="Main"><a class="glass" href="#home">Home</a><a class="glass" href="#projects">Projects</a></nav></header><main><section class="hero"><div><h1>EMTECH<br><em>Projects</em></h1><p>Hi, I am Juan Miguel Galora, a Grade 12 STEM student from Section Sara.</p><a class="glass" href="#projects">Explore projects &darr;</a></div><div class="art" aria-hidden="true"><i></i><i></i><i></i><i></i></div></section><section id="projects"><h2>Selected projects</h2><div class="cards">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Juan Miguel Galora | Portfolio</title><link rel="stylesheet" href="style.css?v=js-motion"></head><body><header id="home"><a class="brand" href="#home">Juan Miguel Galora<span aria-hidden="true">.</span></a><nav id="main-nav" aria-label="Main"><a class="glass" href="#home">Home</a><a class="glass" href="#projects">Projects</a></nav></header><main><section class="hero"><div><h1>EMTECH<br><em>Projects</em></h1><p>Hi, I am Juan Miguel Galora, a Grade 12 STEM student from Section Sara.</p><a class="glass" href="#projects">Explore projects &darr;</a></div><div class="art" aria-hidden="true"><i></i><i></i><i></i><i></i></div></section><section id="projects"><h2>Selected projects</h2><div class="cards">
 <article><div class="copy"><h3>Financial Dashboard</h3><p>This includes the income sheet, expense sheet, and report summary</p><div class="actions"><a class="glass" href="./FinancialDashboard_Juan%20Miguel%20B.%20Galora.xlsx" data-download-source="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/FinancialDashboard_Juan%20Miguel%20B.%20Galora.xlsx" download="FinancialDashboard_Juan Miguel B. Galora.xlsx">Download &darr;</a></div></div></article>
 <article><div class="copy"><h3>Mini Presentation</h3><p>A mini presentation focused on creative design.</p><div class="actions"><a class="glass" href="./MiniPresentation_Juan%20Miguel%20Galora.pptx" data-download-source="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/MiniPresentation_Juan%20Miguel%20Galora.pptx" download="MiniPresentation_Juan Miguel Galora.pptx">Download &darr;</a></div></div></article>
 <article><div class="copy"><h3>Advocacy or Creative Design</h3><p>A design project exploring advocacy or creative expression.</p><div class="actions"><a class="glass" href="./Image%20Design.png" data-download-source="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/Image%20Design.png" download="Image Design.png">Download &darr;</a></div></div></article>
@@ -46,15 +46,28 @@ function slideToProjects(event) {
   slide = requestAnimationFrame(step);
 }
 projectLinks.forEach(link => link.addEventListener("click", slideToProjects));
-if ("IntersectionObserver" in window) {
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+if ('IntersectionObserver' in window && typeof Element.prototype.animate === 'function') {
   const observer = new IntersectionObserver(entries => {
-    for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
-      entry.target.classList.add("in-view");
-      observer.unobserve(entry.target);
-    }
+    const visible = entries.filter(entry => entry.isIntersecting);
+    visible.forEach(({ target: card }, index) => {
+      observer.unobserve(card);
+      if (reducedMotion.matches || card.contains(document.activeElement)) return;
+
+      const animation = card.animate(
+        [{ opacity: 0, translate: '0 24px' }, { opacity: 1, translate: '0 0' }],
+        { duration: 650, delay: Math.min(index, 2) * 90, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'backwards' }
+      );
+      const cancel = () => animation.cancel();
+      card.addEventListener('focusin', cancel, { once: true });
+      reducedMotion.addEventListener('change', cancel);
+      animation.finished.catch(() => {}).finally(() => {
+        card.removeEventListener('focusin', cancel);
+        reducedMotion.removeEventListener('change', cancel);
+      });
+    });
   }, { threshold: .15 });
-  document.querySelectorAll(".cards article").forEach(card => observer.observe(card));
+  document.querySelectorAll('.cards article').forEach(card => observer.observe(card));
 }
 const navigation = document.getElementById('main-nav');
 const toggle = document.createElement('button');

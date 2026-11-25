@@ -87,9 +87,6 @@ article {
 .cards .cover { flex: none; }
 .cards .copy { display: flex; flex-direction: column; flex: 1; }
 .cards .actions { margin-top: auto; }
-@media (prefers-reduced-motion: no-preference) {
-  .cards article.in-view { animation: arrive 650ms var(--ease) backwards; }
-}
 .hero { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); }
 .hero h1 { font-size: clamp(44px, 7.6vw, 100px); line-height: 1; margin: 0 0 20px; }
 .hero p { max-width: 36ch; font-size: clamp(17px, 2vw, 22px); }
@@ -107,14 +104,7 @@ article {
 
 .cards h3 { overflow-wrap: anywhere; }
 
-@keyframes project-reveal {
-  from { opacity: 0; translate: 0 26px; scale: .98; }
-  to { opacity: 1; translate: 0 0; scale: 1; }
-}
 @media (prefers-reduced-motion: no-preference) {
-  .cards article.in-view { animation: project-reveal 720ms var(--ease) backwards; }
-  .cards article.in-view:nth-child(3n+2) { animation-delay: 90ms; }
-  .cards article.in-view:nth-child(3n) { animation-delay: 180ms; }
   .actions a[download] { transition: transform 280ms var(--ease), box-shadow 280ms ease, background-color 280ms ease; }
   .actions a[download]:active { transform: translateY(0) scale(.97); }
 }
