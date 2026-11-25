@@ -1,74 +1,45 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Juan Miguel Galora | Portfolio</title><link rel="stylesheet" href="style.css?v=js-motion"></head><body><header id="home"><a class="brand" href="#home">Juan Miguel Galora<span aria-hidden="true">.</span></a><nav id="main-nav" aria-label="Main"><a class="glass" href="#home">Home</a><a class="glass" href="#projects">Projects</a></nav></header><main><section class="hero"><div><h1>EMTECH<br><em>Projects</em></h1><p>Hi, I am Juan Miguel Galora, a Grade 12 STEM student from Section Sara.</p><a class="glass" href="#projects">Explore projects &darr;</a></div><div class="art" aria-hidden="true"><i></i><i></i><i></i><i></i></div></section><section id="projects"><h2>Selected projects</h2><div class="cards">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Juan Miguel Galora | Portfolio</title><link rel="stylesheet" href="style.css?v=portfolio-motion-2"></head><body><header id="home"><a class="brand" href="#home">Juan Miguel Galora<span aria-hidden="true">.</span></a><nav id="main-nav" aria-label="Main"><a class="glass" href="#home">Home</a><a class="glass" href="#projects">Projects</a></nav></header><main><section class="hero"><div><h1>EMTECH<br><em>Projects</em></h1><p>Hi, I am Juan Miguel Galora, a Grade 12 STEM student from Section Zara.</p><a class="glass" href="#projects">Explore projects &darr;</a></div><div class="art" aria-hidden="true"><i></i><i></i><i></i><i></i></div></section><section id="projects"><h2>Selected projects</h2><div class="cards">
 <article><div class="copy"><h3>Financial Dashboard</h3><p>This includes the income sheet, expense sheet, and report summary</p><div class="actions"><a class="glass" href="./FinancialDashboard_Juan%20Miguel%20B.%20Galora.xlsx" data-download-source="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/FinancialDashboard_Juan%20Miguel%20B.%20Galora.xlsx" download="FinancialDashboard_Juan Miguel B. Galora.xlsx">Download &darr;</a></div></div></article>
 <article><div class="copy"><h3>Mini Presentation</h3><p>A mini presentation focused on creative design.</p><div class="actions"><a class="glass" href="./MiniPresentation_Juan%20Miguel%20Galora.pptx" data-download-source="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/MiniPresentation_Juan%20Miguel%20Galora.pptx" download="MiniPresentation_Juan Miguel Galora.pptx">Download &darr;</a></div></div></article>
 <article><div class="copy"><h3>Advocacy or Creative Design</h3><p>A design project exploring advocacy or creative expression.</p><div class="actions"><a class="glass" href="./Image%20Design.png" data-download-source="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/Image%20Design.png" download="Image Design.png">Download &darr;</a></div></div></article>
 <article><div class="copy"><h3>Sales Infographic</h3><p>An infographic that presents sales information visually.</p><div class="actions"><a class="glass" href="./Sales%20Data.xlsx" data-download-source="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/Sales%20Data.xlsx" download="Sales Data.xlsx">Download &darr;</a></div></div></article>
 <article><div class="copy"><h3>Infographic</h3><p>An infographic that presents information through visuals.</p><div class="actions"><a class="glass" href="./Infographic.png" data-download-source="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/Infographic.png" download="Infographic.png">Download &darr;</a></div></div></article>
 <article><div class="copy"><h3>Social Advocacy Video</h3><p>A video that raises awareness about a social issue.</p><div class="actions"><a class="glass" href="./Social%20Advocacy%20Video.mp4" data-download-source="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/Social%20Advocacy%20Video.mp4" download="Social Advocacy Video.mp4">Download &darr;</a></div></div></article>
-</div></section></main><footer><span>Juan Miguel Galora</span><a href="#home">Back to top ↑</a></footer><script>
-const projectLinks = document.querySelectorAll('a[href="#projects"]');
-let slide = 0;
-function stopSlide() {
-  cancelAnimationFrame(slide);
-  slide = 0;
-}
-for (const event of ['wheel', 'touchstart', 'keydown', 'pointerdown']) {
-  window.addEventListener(event, stopSlide, { passive: true });
-}
-function slideToProjects(event) {
-  if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-  event.preventDefault();
-  stopSlide();
-  const target = document.getElementById('projects');
-  const start = window.scrollY;
-  const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-  const destination = Math.min(maxScroll, start + target.getBoundingClientRect().top - 16);
-  const distance = destination - start;
-  const finish = () => {
-    if (location.hash !== '#projects' && location.protocol !== 'file:') history.pushState(null, '', '#projects');
-    target.tabIndex = -1;
-    target.focus({ preventScroll: true });
-  };
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    target.scrollIntoView({ behavior: 'instant' });
-    finish();
-    return;
-  }
-  const began = performance.now();
-  function step(now) {
-    const t = Math.min(1, Math.max(0, (now - began) / 950));
-    const ease = t * t * (3 - 2 * t);
-    window.scrollTo({ top: start + distance * ease, behavior: 'instant' });
-    if (t < 1) slide = requestAnimationFrame(step);
-    else finish();
-  }
-  slide = requestAnimationFrame(step);
-}
-projectLinks.forEach(link => link.addEventListener("click", slideToProjects));
+</div></section></main><footer><span>Juan Miguel Galora</span><a href="#home">Back to top ↑</a></footer><div class="download-status" role="status" aria-atomic="true"></div><script>
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-if ('IntersectionObserver' in window && typeof Element.prototype.animate === 'function') {
-  const observer = new IntersectionObserver(entries => {
-    const visible = entries.filter(entry => entry.isIntersecting);
-    visible.forEach(({ target: card }, index) => {
-      observer.unobserve(card);
-      if (reducedMotion.matches || card.contains(document.activeElement)) return;
+const projects = document.getElementById('projects');
+projects.tabIndex = -1;
 
-      const animation = card.animate(
-        [{ opacity: 0, translate: '0 24px' }, { opacity: 1, translate: '0 0' }],
-        { duration: 650, delay: Math.min(index, 2) * 90, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'backwards' }
-      );
-      const cancel = () => animation.cancel();
-      card.addEventListener('focusin', cancel, { once: true });
-      reducedMotion.addEventListener('change', cancel);
-      animation.finished.catch(() => {}).finally(() => {
-        card.removeEventListener('focusin', cancel);
-        reducedMotion.removeEventListener('change', cancel);
-      });
-    });
-  }, { threshold: .15 });
+document.querySelectorAll('a[href="#projects"]').forEach(link => {
+  link.addEventListener('click', event => {
+    if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    if (location.hash !== '#projects' && location.protocol !== 'file:') {
+      history.pushState(null, '', '#projects');
+    }
+    projects.focus({ preventScroll: true });
+    projects.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+  });
+});
+
+if ('IntersectionObserver' in window) {
+  const observer = new IntersectionObserver(entries => {
+    for (const { target: card, isIntersecting } of entries) {
+      if (!isIntersecting) continue;
+      observer.unobserve(card);
+      if (!reducedMotion.matches) card.classList.add('card-reveal');
+    }
+  }, { threshold: 0.1 });
   document.querySelectorAll('.cards article').forEach(card => observer.observe(card));
 }
+
+for (const action of ['copy', 'cut', 'paste']) {
+  document.addEventListener(action, event => {
+    if (!event.target.closest?.('input, textarea, [contenteditable]')) event.preventDefault();
+  });
+}
+
 const navigation = document.getElementById('main-nav');
 const toggle = document.createElement('button');
 toggle.className = 'glass menu-toggle';
@@ -83,8 +54,9 @@ function setMenu(open) {
 setMenu(false);
 toggle.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
 navigation.addEventListener('click', event => {
-  if (!event.target.closest('a') || toggle.getAttribute('aria-expanded') !== 'true') return;
-  toggle.focus({preventScroll:true});
+  const link = event.target.closest('a');
+  if (!link || toggle.getAttribute('aria-expanded') !== 'true') return;
+  if (link.hash !== '#projects') toggle.focus({ preventScroll: true });
   setMenu(false);
 });
 document.addEventListener('click', event => {
@@ -97,36 +69,55 @@ document.addEventListener('keydown', event => {
   }
 });
 matchMedia('(max-width:580px)').addEventListener('change', () => setMenu(false));
+const downloadStatus = document.querySelector('.download-status');
+let hideDownloadStatus;
+
+function showDownloadStatus(message) {
+  clearTimeout(hideDownloadStatus);
+  downloadStatus.textContent = message;
+  downloadStatus.dataset.visible = 'true';
+  hideDownloadStatus = setTimeout(() => delete downloadStatus.dataset.visible, 3200);
+}
+
+function startDownload(url, filename) {
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = filename;
+  document.body.append(anchor);
+  anchor.click();
+  anchor.remove();
+}
+
 document.querySelectorAll('.actions a[download]').forEach(link => {
   link.addEventListener('click', async event => {
     if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    if (location.protocol === 'file:') {
+      showDownloadStatus('Download started');
+      return;
+    }
+
     event.preventDefault();
-    if (link.dataset.loading) return;
-    const label = link.textContent;
-    link.dataset.loading = 'true';
-    link.textContent = 'Downloading…';
+    if (link.getAttribute('aria-busy') === 'true') return;
+    link.setAttribute('aria-busy', 'true');
+    showDownloadStatus('Preparing download…');
+
     try {
-      let response;
-      if (location.protocol !== 'file:') {
-        response = await fetch(link.href).catch(() => null);
+      const local = await fetch(link.href, { method: 'HEAD' }).catch(() => null);
+      if (local?.ok && !local.headers.get('content-type')?.includes('text/html')) {
+        startDownload(link.href, link.download);
+      } else {
+        const response = await fetch(link.dataset.downloadSource);
+        if (!response.ok) throw new Error('Download unavailable');
+        const url = URL.createObjectURL(await response.blob());
+        startDownload(url, link.download);
+        setTimeout(() => URL.revokeObjectURL(url), 30000);
       }
-      if (!response?.ok) response = await fetch(link.dataset.downloadSource);
-      if (!response.ok) throw new Error('Download unavailable');
-      const url = URL.createObjectURL(await response.blob());
-      const download = document.createElement('a');
-      download.href = url;
-      download.download = link.download;
-      document.body.append(download);
-      download.click();
-      download.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 30000);
+      showDownloadStatus('Download started');
     } catch {
-      window.location.assign(link.dataset.downloadSource);
+      showDownloadStatus('Download unavailable. Try again.');
     } finally {
-      delete link.dataset.loading;
-      link.textContent = label;
+      link.removeAttribute('aria-busy');
     }
   });
 });
 </script></body></html>
-
