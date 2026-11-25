@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Juan Miguel Galora | Portfolio</title><link rel="stylesheet" href="style.css?v=downloads"></head><body><header id="home"><a class="brand" href="#home">Juan Miguel Galora<span aria-hidden="true">.</span></a><nav id="main-nav" aria-label="Main"><a class="glass" href="#home">Home</a><a class="glass" href="#projects">Projects</a></nav></header><main><section class="hero"><div><h1>EMTECH<br><em>Projects</em></h1><p>Hi, I am Juan Miguel Galora, a Grade 12 STEM student from Section Sara.</p><a class="glass" href="#projects">Explore projects &darr;</a></div><div class="art" aria-hidden="true"><i></i><i></i><i></i><i></i></div></section><section id="projects"><h2>Selected projects</h2><div class="cards">
-<article><div class="copy"><h3>Financial Dashboard</h3><p>This includes the income sheet, expense sheet, and report summary</p><div class="actions"><a class="glass" href="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/FinancialDashboard_Juan%20Miguel%20B.%20Galora.xlsx" download="FinancialDashboard_Juan Miguel B. Galora.xlsx">Download &darr;</a></div></div></article>
-<article><div class="copy"><h3>Mini Presentation</h3><p>A mini presentation focused on creative design.</p><div class="actions"><a class="glass" href="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/MiniPresentation_Juan%20Miguel%20Galora.pptx" download="MiniPresentation_Juan Miguel Galora.pptx">Download &darr;</a></div></div></article>
-<article><div class="copy"><h3>Advocacy or Creative Design</h3><p>A design project exploring advocacy or creative expression.</p><div class="actions"><a class="glass" href="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/Image%20Design.png" download="Image Design.png">Download &darr;</a></div></div></article>
-<article><div class="copy"><h3>Sales Infographic</h3><p>An infographic that presents sales information visually.</p><div class="actions"><a class="glass" href="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/Sales%20Data.xlsx" download="Sales Data.xlsx">Download &darr;</a></div></div></article>
-<article><div class="copy"><h3>Infographic</h3><p>An infographic that presents information through visuals.</p><div class="actions"><a class="glass" href="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/Infographic.png" download="Infographic.png">Download &darr;</a></div></div></article>
-<article><div class="copy"><h3>Social Advocacy Video</h3><p>A video that raises awareness about a social issue.</p><div class="actions"><a class="glass" href="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/Social%20Advocacy%20Video.mp4" download="Social Advocacy Video.mp4">Download &darr;</a></div></div></article>
+<article><div class="copy"><h3>Financial Dashboard</h3><p>This includes the income sheet, expense sheet, and report summary</p><div class="actions"><a class="glass" href="./FinancialDashboard_Juan%20Miguel%20B.%20Galora.xlsx" data-download-source="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/FinancialDashboard_Juan%20Miguel%20B.%20Galora.xlsx" download="FinancialDashboard_Juan Miguel B. Galora.xlsx">Download &darr;</a></div></div></article>
+<article><div class="copy"><h3>Mini Presentation</h3><p>A mini presentation focused on creative design.</p><div class="actions"><a class="glass" href="./MiniPresentation_Juan%20Miguel%20Galora.pptx" data-download-source="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/MiniPresentation_Juan%20Miguel%20Galora.pptx" download="MiniPresentation_Juan Miguel Galora.pptx">Download &darr;</a></div></div></article>
+<article><div class="copy"><h3>Advocacy or Creative Design</h3><p>A design project exploring advocacy or creative expression.</p><div class="actions"><a class="glass" href="./Image%20Design.png" data-download-source="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/Image%20Design.png" download="Image Design.png">Download &darr;</a></div></div></article>
+<article><div class="copy"><h3>Sales Infographic</h3><p>An infographic that presents sales information visually.</p><div class="actions"><a class="glass" href="./Sales%20Data.xlsx" data-download-source="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/Sales%20Data.xlsx" download="Sales Data.xlsx">Download &darr;</a></div></div></article>
+<article><div class="copy"><h3>Infographic</h3><p>An infographic that presents information through visuals.</p><div class="actions"><a class="glass" href="./Infographic.png" data-download-source="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/Infographic.png" download="Infographic.png">Download &darr;</a></div></div></article>
+<article><div class="copy"><h3>Social Advocacy Video</h3><p>A video that raises awareness about a social issue.</p><div class="actions"><a class="glass" href="./Social%20Advocacy%20Video.mp4" data-download-source="https://raw.githubusercontent.com/Zk408DevLoper/juanmiguelgalora/main/Social%20Advocacy%20Video.mp4" download="Social Advocacy Video.mp4">Download &darr;</a></div></div></article>
 </div></section></main><footer><span>Juan Miguel Galora</span><a href="#home">Back to top ↑</a></footer><script>
 const projectLinks = document.querySelectorAll('a[href="#projects"]');
 let slide = 0;
@@ -93,7 +93,11 @@ document.querySelectorAll('.actions a[download]').forEach(link => {
     link.dataset.loading = 'true';
     link.textContent = 'Downloading…';
     try {
-      const response = await fetch(link.href);
+      let response;
+      if (location.protocol !== 'file:') {
+        response = await fetch(link.href).catch(() => null);
+      }
+      if (!response?.ok) response = await fetch(link.dataset.downloadSource);
       if (!response.ok) throw new Error('Download unavailable');
       const url = URL.createObjectURL(await response.blob());
       const download = document.createElement('a');
@@ -104,7 +108,7 @@ document.querySelectorAll('.actions a[download]').forEach(link => {
       download.remove();
       setTimeout(() => URL.revokeObjectURL(url), 30000);
     } catch {
-      window.location.assign(link.href);
+      window.location.assign(link.dataset.downloadSource);
     } finally {
       delete link.dataset.loading;
       link.textContent = label;
